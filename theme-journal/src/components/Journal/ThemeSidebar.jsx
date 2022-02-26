@@ -3,7 +3,7 @@ import { Form, Container, Button } from "react-bootstrap";
 import "./Journal.css";
 import axios from "../../axios";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../firebase.js";
+import { auth } from "../../firebase";
 
 export default function ThemeSidebar(props) {
   const [user, loading, error] = useAuthState(auth);
