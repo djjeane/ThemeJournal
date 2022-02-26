@@ -49,6 +49,25 @@ app.post("/v2/themes", (req, res) => {
     }
   });
 });
+app.patch("/v2/themes", (req, res) => {
+  const updatedTheme = req.body;
+  Themes.findOneAndUpdate(
+    updatedTheme.user_id,
+    updatedTheme,
+    { new: true },
+    (err, data) => {
+      if (err) {
+        console.log(err);
+
+        res.status(500).send(err);
+      } else {
+        //200 -> because it's downloading data
+        console.log(data);
+        res.status(200).send(data);
+      }
+    }
+  );
+});
 
 //listen
 app.listen(port, (req, res) => console.log(`listening on port: ${port}`));
