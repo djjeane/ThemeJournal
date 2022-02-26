@@ -18,10 +18,8 @@ export default function ThemeSidebar(props) {
 
   useEffect(() => {
     async function fetchTheme() {
-      let url = `/v2/journals`;
-      console.log(url);
+      let url = "/v2/themes";
       const response = await axios.get(url);
-      console.log(response.data);
       if (response.data.length > 0) {
         setTheme(response.data);
 

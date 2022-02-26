@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 
 app.get("/", (req, res) => res.status(200).send("hello World"));
 
-app.get("/v2/themes/:id", (req, res) => {
+app.get("/v2/themes/", (req, res) => {
   console.log("get request for themes");
   Themes.find({ user_id: req.params.id }, (err, data) => {
     if (err) {
@@ -62,7 +62,7 @@ app.get("/v2/journals", (req, res) => {
 
 app.post("/v2/journals", (req, res) => {
   const journal = req.body;
-
+  console.log(journal);
   Journals.create(journal, (err, data) => {
     if (err) {
       res.status(500).send(err);
