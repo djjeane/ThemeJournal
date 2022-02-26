@@ -1,4 +1,4 @@
-import express from "Express";
+import express from "express";
 import mongoose from "mongoose";
 import Themes from "./DatabaseModels/themeSchema.js";
 import Journals from "./DatabaseModels/journalSchema.js";
