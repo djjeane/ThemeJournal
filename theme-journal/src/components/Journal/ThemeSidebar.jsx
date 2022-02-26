@@ -26,7 +26,6 @@ export default function ThemeSidebar(props) {
   }, []);
 
   function AddIdealOutcome() {
-    console.log(theme.outcomes);
     setTheme({
       ...theme,
       outcomes: [...theme.outcomes, ""],
@@ -62,7 +61,7 @@ export default function ThemeSidebar(props) {
         end_date: new Date().toUTCString(),
         goals_descriptions: [],
       };
-      axios.post("/v2/themes", newTheme);
+      axios.patch("/v2/themes", newTheme);
       alert("Theme saved");
     } catch (err) {
       console.log(err);

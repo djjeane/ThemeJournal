@@ -52,7 +52,7 @@ app.post("/v2/themes", (req, res) => {
 app.patch("/v2/themes", (req, res) => {
   const updatedTheme = req.body;
   Themes.findOneAndUpdate(
-    updatedTheme.user_id,
+    { user_id: updatedTheme.user_id },
     updatedTheme,
     { new: true },
     (err, data) => {
