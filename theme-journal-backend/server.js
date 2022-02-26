@@ -2,14 +2,14 @@ import express from "express";
 import mongoose from "mongoose";
 import Themes from "./DatabaseModels/themeSchema.js";
 import Journals from "./DatabaseModels/journalSchema.js";
+import dotenv from "dotenv";
 
-mongoose.connect(
-  "mongodb+srv://ThemeAdmin:Xf9m5hv3geGx@cluster0.axn3b.mongodb.net/Theme?retryWrites=true&w=majority",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
+dotenv.config();
+
+mongoose.connect(process.env.MONGODB_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 //app config
 const app = express();
 const port = process.env.PORT || 9000;
@@ -23,8 +23,7 @@ app.use((req, res, next) => {
 
 app.get("/", (req, res) => res.status(200).send("hello World"));
 
-app.get("/v2/themes/", (req, res) => {
-  console.log("get request for themes");
+app.get("/v2/themes/:id", (req, res) => {
   Themes.find({ user_id: req.params.id }, (err, data) => {
     if (err) {
       console.log(err);
@@ -33,43 +32,6 @@ app.get("/v2/themes/", (req, res) => {
       //200 -> because it's downloading data
       console.log(data);
       res.status(200).send(data);
-    }
-  });
-});
-
-app.post("/v2/themes", (req, res) => {
-  console.log("post request for themes");
-  const theme = req.body;
-  Themes.create(theme, (err, data) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.status(201).send(data);
-    }
-  });
-});
-
-app.get("/v2/journals", (req, res) => {
-  console.log("get request for journals");
-  Journals.find((err, data) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      //200 -> because it's downloading data
-      res.status(200).send(data);
-    }
-  });
-});
-
-app.post("/v2/journals", (req, res) => {
-  console.log("post request for journals");
-  const journal = req.body;
-  console.log(journal);
-  Journals.create(journal, (err, data) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.status(201).send(data);
     }
   });
 });

@@ -14,7 +14,7 @@ export default function ThemeSidebar(props) {
 
   useEffect(() => {
     async function fetchTheme() {
-      let url = "/v2/themes";
+      let url = "/v2/themes" + user.uid;
       const response = await axios.get(url);
       if (response.data.length > 0) {
         setTheme(response.data);
@@ -24,7 +24,7 @@ export default function ThemeSidebar(props) {
     }
 
     if (user) fetchTheme();
-  }, []);
+  }, [user]);
 
   function AddIdealOutcome() {
     console.log(outcomes);
