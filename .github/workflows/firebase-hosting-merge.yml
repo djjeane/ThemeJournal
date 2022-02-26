@@ -18,4 +18,3 @@ jobs:
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_THEME_DF541 }}"
           channelId: live
           projectId: theme-df541
-          entrypoint: /theme-journal
