@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "heroku-prebuild": "cd theme-journal-backend && npm install && npm run build",
+    "heroku-prebuild": "cd theme-journal-backend && npm install && npm run start",
     "start": "cd theme-journal && npm start"
   }
 }
