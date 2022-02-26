@@ -7,6 +7,7 @@ import { auth } from "../../firebase.js";
 
 export default function ThemeSidebar(props) {
   const [user, loading, error] = useAuthState(auth);
+
   const [theme, setTheme] = useState({
     title: "",
     description: "",
@@ -17,12 +18,14 @@ export default function ThemeSidebar(props) {
     async function fetchTheme() {
       let url = "/v2/themes/" + user.uid;
       const response = await axios.get(url);
-      if (response.data.length > 0) {
+      if (response.status === 200) {
         setTheme(response.data[0]);
-      } else setTheme();
+      } else alert("Error: " + response.status);
     }
 
-    if (user) fetchTheme();
+    if (user) {
+      fetchTheme();
+    }
   }, []);
 
   function AddIdealOutcome() {
@@ -30,6 +33,29 @@ export default function ThemeSidebar(props) {
       ...theme,
       outcomes: [...theme.outcomes, ""],
     });
+  }
+
+  function SaveTheme(e) {
+    try {
+      e.preventDefault();
+
+      var newTheme = {
+        user_id: user.id,
+        title: theme.title,
+        description: theme.description,
+        outcomes: theme.outcomes,
+        start_date: new Date().toUTCString(),
+        end_date: new Date().toUTCString(),
+        goals_descriptions: [],
+      };
+      if (theme) {
+        axios.patch("/v2/themes", newTheme);
+      } else {
+        axios.post("/v2/themes", newTheme);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   const GetOutcomesInputs = theme.outcomes.map((outcome, i) => {
@@ -47,26 +73,6 @@ export default function ThemeSidebar(props) {
       </Form.Group>
     );
   });
-
-  function SaveTheme(e) {
-    try {
-      e.preventDefault();
-
-      var newTheme = {
-        user_id: user.id,
-        title: theme.title,
-        description: theme.description,
-        outcomes: theme.outcomes,
-        start_date: new Date().toUTCString(),
-        end_date: new Date().toUTCString(),
-        goals_descriptions: [],
-      };
-      axios.patch("/v2/themes", newTheme);
-      alert("Theme saved");
-    } catch (err) {
-      console.log(err);
-    }
-  }
 
   return (
     <Container>
@@ -97,7 +103,7 @@ export default function ThemeSidebar(props) {
           Add Ideal Outcome
         </Button>
         <h3 className="">Ideal Outcomes</h3>
-        {GetOutcomesInputs}
+        {theme ? GetOutcomesInputs : ""}
         <Button variant="outline-secondary" onClick={SaveTheme}>
           Save Theme
         </Button>
