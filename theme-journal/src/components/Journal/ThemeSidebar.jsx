@@ -7,50 +7,44 @@ import { auth } from "../../firebase.js";
 
 export default function ThemeSidebar(props) {
   const [user, loading, error] = useAuthState(auth);
-  const [outcomes, setOutcomes] = useState([]);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [theme, setTheme] = useState({});
+  const [theme, setTheme] = useState({
+    title: "",
+    description: "",
+    outcomes: [],
+  });
 
   useEffect(() => {
     async function fetchTheme() {
-      let url = "/v2/themes" + user.uid;
+      let url = "/v2/themes/" + user.uid;
       const response = await axios.get(url);
       if (response.data.length > 0) {
-        setTheme(response.data);
-
-        return response;
-      }
+        setTheme(response.data[0]);
+      } else setTheme();
     }
 
     if (user) fetchTheme();
-  }, [user]);
+  }, []);
 
   function AddIdealOutcome() {
-    console.log(outcomes);
-    setOutcomes([
-      ...outcomes,
-      {
-        id: outcomes.length,
-        value: "",
-      },
-    ]);
+    console.log(theme.outcomes);
+    setTheme({
+      ...theme,
+      outcomes: [...theme.outcomes, ""],
+    });
   }
 
-  const GetOutcomesInputs = outcomes.map((outcome) => {
+  const GetOutcomesInputs = theme.outcomes.map((outcome, i) => {
+    console.log(theme);
     return (
-      <Form.Group
-        className="mb-3"
-        controlId="exampleForm.ControlTextarea1"
-        key={outcome.id}
-        value={outcome.value}
-        onChange={(e) => {
-          const newOutcomes = [...outcomes];
-          newOutcomes[outcome.id].value = e.target.value;
-          setOutcomes(newOutcomes);
-        }}
-      >
-        <Form.Control />
+      <Form.Group className="mb-3" key={i}>
+        <Form.Control
+          value={outcome}
+          onChange={(e) => {
+            var outcomes = [...theme.outcomes];
+            outcomes[i] = e.target.value;
+            setTheme({ ...theme, outcomes: outcomes });
+          }}
+        />
       </Form.Group>
     );
   });
@@ -58,16 +52,17 @@ export default function ThemeSidebar(props) {
   function SaveTheme(e) {
     try {
       e.preventDefault();
-      var theme = {
+
+      var newTheme = {
         user_id: user.id,
-        title: title,
-        description: description,
-        outcomes: outcomes,
+        title: theme.title,
+        description: theme.description,
+        outcomes: theme.outcomes,
         start_date: new Date().toUTCString(),
         end_date: new Date().toUTCString(),
         goals_descriptions: [],
       };
-      axios.post("/v2/themes", theme);
+      axios.post("/v2/themes", newTheme);
       alert("Theme saved");
     } catch (err) {
       console.log(err);
@@ -81,8 +76,10 @@ export default function ThemeSidebar(props) {
           <Form.Label>Season's Theme</Form.Label>
           <Form.Control
             placeholder="The Spring of Enlightenment"
-            value={title}
-            onChange={(event) => setTitle(event.target.value)}
+            value={theme.title}
+            onChange={(event) =>
+              setTheme({ ...theme, title: event.target.value })
+            }
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
@@ -91,18 +88,20 @@ export default function ThemeSidebar(props) {
             placeholder="A season to learn and grow. To appreciate more than I take."
             as="textarea"
             rows={3}
-            value={description}
-            onChange={(event) => setDescription(event.target.value)}
+            value={theme.description}
+            onChange={(event) =>
+              setTheme({ ...theme, description: event.target.value })
+            }
           />
         </Form.Group>
         <Button variant="outline-secondary" onClick={AddIdealOutcome}>
           Add Ideal Outcome
-        </Button>{" "}
+        </Button>
         <h3 className="">Ideal Outcomes</h3>
         {GetOutcomesInputs}
         <Button variant="outline-secondary" onClick={SaveTheme}>
           Save Theme
-        </Button>{" "}
+        </Button>
       </Form>
     </Container>
   );
