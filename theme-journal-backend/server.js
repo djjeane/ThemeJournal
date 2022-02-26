@@ -38,6 +38,7 @@ app.get("/v2/themes/", (req, res) => {
 });
 
 app.post("/v2/themes", (req, res) => {
+  console.log("post request for themes");
   const theme = req.body;
   Themes.create(theme, (err, data) => {
     if (err) {
@@ -61,6 +62,7 @@ app.get("/v2/journals", (req, res) => {
 });
 
 app.post("/v2/journals", (req, res) => {
+  console.log("post request for journals");
   const journal = req.body;
   console.log(journal);
   Journals.create(journal, (err, data) => {

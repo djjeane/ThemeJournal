@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Form, Container, Button } from "react-bootstrap";
 import "./Journal.css";
-import axios from "axios";
+import axios from "../../axios";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase.js";
 
@@ -11,10 +11,6 @@ export default function ThemeSidebar(props) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [theme, setTheme] = useState({});
-
-  axios.create({
-    baseURL: "http://localhost:9000",
-  });
 
   useEffect(() => {
     async function fetchTheme() {
