@@ -1,5 +1,6 @@
 import React from "react";
 import ParticlesBg from "particles-bg";
+import "./Hero.css";
 export default function Hero(props) {
   return (
     <div className="hero">

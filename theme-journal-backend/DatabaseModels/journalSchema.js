@@ -13,4 +13,4 @@ const journalSchema = mongoose.Schema(
 );
 
 //Collection inside the database
-export default mongoose.model("Journals", journalSchema);
+export default mongoose.model("Journal", journalSchema);

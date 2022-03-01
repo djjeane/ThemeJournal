@@ -8,6 +8,8 @@ import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signOut,
+  Persistence,
+  persi,
 } from "firebase/auth";
 
 import {
@@ -21,17 +23,11 @@ import {
 
 const firebaseConfig = {
   apiKey: "AIzaSyC0Flq1h4VHSLnBiWHnpVLWBl4aXFAHlQA",
-
   authDomain: "theme-df541.firebaseapp.com",
-
   projectId: "theme-df541",
-
   storageBucket: "theme-df541.appspot.com",
-
   messagingSenderId: "732919905348",
-
   appId: "1:732919905348:web:aeaba4f0399c6510041011",
-
   measurementId: "G-XTQT81KZMH",
 };
 

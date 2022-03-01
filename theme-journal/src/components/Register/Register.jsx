@@ -1,26 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import {
   auth,
   registerWithEmailAndPassword,
   signInWithGoogle,
 } from "../../firebase.js";
 import "./Register.css";
+import { useNavigate } from "react-router-dom";
+
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [user, loading, error] = useAuthState(auth);
+  const navigate = useNavigate();
+
   const register = () => {
     if (!name) alert("Please enter name");
     registerWithEmailAndPassword(name, email, password);
+    return navigate("/theme");
   };
+
   useEffect(() => {
     if (loading) return;
-    if (user) console.log("Already logged in");
+    if (user) {
+      console.log("Already logged in");
+    }
   }, [user, loading]);
+
   return (
     <Container fluid className="register">
       <Form>
